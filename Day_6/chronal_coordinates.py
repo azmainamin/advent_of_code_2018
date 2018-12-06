@@ -2,7 +2,7 @@
 def readFile():
     inps = []
 
-    with open("input.txt", "r") as file:
+    with open("test.txt", "r") as file:
         for line in file:
             x, y = line.strip("\n").split(",")
             x, y = int(x), int(y)
@@ -72,19 +72,37 @@ def calculateArea(distGrid, notInfinitePoints):
                 else:
                    pointToArea[distGrid[i][j]] = 1
 
-    #print(notInfinitePoints)
-    print(pointToArea)
     maxArea = max(pointToArea, key=lambda x: pointToArea[x])
 
     print(pointToArea[maxArea])
+################## PART 2 ############################################
+
+def getDesiredRegion(grid,inps):
+    safeCoord = []
+    res = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            coord = (i, j)
+            total = 0
+            for point in inps:
+                total += manhattanDistance(coord, point)
+            if total < 10000:
+                res +=1
+
+    print(res)
+
+###################################### MAIN #####################################            
 def main():
     inps = readFile()
     grid = placePoints(inps)
     distGrid = getMinManHatDistanceForEachPoint(grid, inps)
     edgePoints = createEdgePoints()
     notInfinitePoints = notInfinite(edgePoints, distGrid, inps)
+    # PART 1
     calculateArea(distGrid, notInfinitePoints)
-    
+    # PART 2
+    getDesiredRegion(grid, inps)
+
     #prettyPrintGrid(grid)
     #prettyPrintGrid(distGrid)
     #print(notInfinitePoints)
