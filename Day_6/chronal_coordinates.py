@@ -33,7 +33,7 @@ def getMinManHatDistanceForEachPoint(grid, inps):
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            point = (i,j) #swap?
+            point = (j,i) #swap?
             minDist = 1000
             for c in range(len(inps)):
                 manDist = manhattanDistance(point, inps[c])
@@ -50,27 +50,23 @@ def createEdgePoints():
     for i in range(360):
         edgePoints.add((0, i))
         edgePoints.add((i, 0))
-        edgePoints.add((360, i))
-        edgePoints.add((i,360))
+        edgePoints.add((359, i))
+        edgePoints.add((i,359))
 
     return edgePoints
 
 def notInfinite(edgePoints, distGrid, inps):
-    notInfinite = set()
-    for row in range(len(distGrid)):
-        for col in range(len(distGrid[row])):
-            p = (row, col)
-            if p not in edgePoints:
-                index = distGrid[row][col]
-                notInfinite.add(index)
-
-    return notInfinite
+    ret = set()
+    for x,y in edgePoints:
+        index = distGrid[x][y]
+        ret.add(index)
+    return ret
 
 def calculateArea(distGrid, notInfinitePoints):
     pointToArea = {}
     for i in range(len(distGrid)):
         for j in range(len(distGrid[i])):
-            if distGrid[i][j] in notInfinitePoints:
+            if distGrid[i][j] not in notInfinitePoints:
                 if distGrid[i][j] in pointToArea:
                     pointToArea[distGrid[i][j]] += 1
                 else:
@@ -88,6 +84,7 @@ def main():
     edgePoints = createEdgePoints()
     notInfinitePoints = notInfinite(edgePoints, distGrid, inps)
     calculateArea(distGrid, notInfinitePoints)
+    
     #prettyPrintGrid(grid)
     #prettyPrintGrid(distGrid)
     #print(notInfinitePoints)
