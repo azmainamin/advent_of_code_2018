@@ -41,10 +41,9 @@ class Guard:
 
 ##################################### END CLASS #############################################
 
-def readFile(filaNmame):
+def readFile(fileName):
     res = []
-    inputPath = os.path.abspath(filaNmame)
-    print(inputPath)
+    inputPath = os.path.abspath(fileName)
     with open(inputPath, "r") as f:
         for line in f:
             res.append(line)
