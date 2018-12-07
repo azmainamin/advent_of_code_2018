@@ -18,11 +18,11 @@ def readFile():
 
     return inps
 
-def parseInput(inps):
+def createDependencyGraph(inps):
     """ 
     Item at idx 7 is dependent on item at idx 1 
     """
-    nodes = {}
+    graph = {}
     allNodes = set()
     for item in inps:
         node = item[7]
@@ -30,14 +30,14 @@ def parseInput(inps):
         allNodes.add(dep)
         allNodes.add(node)
 
-        if node in nodes:
-            nodes[node].append(dep)
+        if node in graph:
+            graph[node].append(dep)
         else:
-            nodes[node] = list(dep)
+            graph[node] = list(dep)
 
-    nodeWithNoDep = findNodeWithNoDep(allNodes, nodes)
+    nodeWithNoDep = findNodeWithNoDep(allNodes, graph)
 
-    return allNodes, nodes, nodeWithNoDep
+    return allNodes, graph, nodeWithNoDep
 
 
 def findNodeWithNoDep(allNodes, nodes):
@@ -59,7 +59,7 @@ def traverse(allNodes, nodes, nodeWithNoDep):
 
 def main():
     inps = readFile()
-    allNodes, nodes, nodeWithNoDep = parseInput(inps)
+    allNodes, nodes, nodeWithNoDep = createDependencyGraph(inps)
     
     
     
