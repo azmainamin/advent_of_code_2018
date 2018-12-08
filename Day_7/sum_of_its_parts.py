@@ -1,14 +1,3 @@
-class Node:
-    def __init__(self, id, dependencies = []):
-        self.id = id
-        self.dependencies = dependencies
-
-    def __len__(self):
-        return len(self.dependencies)
-
-    def __str__(self):
-        return self.dependencies
-
 def readFile():
     inps = []
 
