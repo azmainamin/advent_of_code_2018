@@ -12,7 +12,7 @@ class Node:
 def readFile():
     inps = []
 
-    with open("test.txt", "r") as file:
+    with open("input.txt", "r") as file:
         for line in file:
             inps.append(line.split(" "))
 
@@ -32,6 +32,7 @@ def createDependencyGraph(inps):
 
         if node in graph:
             graph[node].append(dep)
+            #graph[node].sort()
         else:
             graph[node] = list(dep)
 
@@ -43,30 +44,51 @@ def createDependencyGraph(inps):
 def findNodeWithNoDep(allNodes, nodes):
     return allNodes - set(nodes.keys())
 
-def findKeysThatHasValue(value, nodes):
+def findKeysThatHasValue(value, graph):
     def hasValue(value, valueList):
         if value in valueList:
             return True
         return False
 
-    keys = list(filter(lambda key: hasValue(value, nodes[key]) == True, nodes))
+    nodes = list(filter(lambda node: hasValue(value, graph[node]) == True, graph))
     #print(keys)
-    return keys
+    return nodes
 
-def traverse(allNodes, nodes, nodeWithNoDep):
-    node = list(nodeWithNoDep).pop()
-    nodesWithIncomingEdgesFromNode = findKeysThatHasValue(node, nodes)
+def traverse(graph, stack, result = []):
+    """
+    graph - Node: [Dependent Nodes]
+    stack - Nodes in a sorted order 
+    """ 
+    
+    # Remove node with no incoming edges from the list. Is len() 0, meaning all conditions met? If yes, add to a stack/list
+    if len(graph) == 0:
+        result.append(stack.pop(0))
+        return result
+
+    noDependencyNode = stack.pop(0)
+    result.append(noDependencyNode)
+    nodesWithIncomingEdgesFromNode = findKeysThatHasValue(noDependencyNode, graph)
+
+    for node in nodesWithIncomingEdgesFromNode:
+        graph[node].remove(noDependencyNode) # Remove C from list
+        if len(graph[node]) == 0:
+            graph.pop(node)
+            stack.append(node)
+            stack.sort()
+    
+    sortedStack = sorted(stack)
+
+    return traverse(graph, stack, result)
 
 def main():
     inps = readFile()
-    allNodes, nodes, nodeWithNoDep = createDependencyGraph(inps)
-    
-    
-    
-    
-    #print(allNodes)
-    #print(nodes)
-    #print(nodeWithNoDep)
+    allNodes, graph, nodeWithNoDep = createDependencyGraph(inps)
+    # Need to meet sorting requirements 
+    # when there are more than one initial node with no incoming edges
+    stack = sorted(list(nodeWithNoDep))   
+    result = traverse(graph,stack)
+
+    print("".join(result))
 
 if __name__ == "__main__":
     main()
