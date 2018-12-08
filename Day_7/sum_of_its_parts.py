@@ -1,7 +1,7 @@
 def readFile():
     inps = []
 
-    with open("input.txt", "r") as file:
+    with open("test.txt", "r") as file:
         for line in file:
             inps.append(line.split(" "))
 
@@ -46,7 +46,10 @@ def findKeysThatHasValue(value, graph):
 def traverse(graph, stack, result = []):
     """
     graph - Node: [Dependent Nodes]
-    stack - Nodes in a sorted order 
+    stack - Nodes in a sorted order
+
+    This is a slight variation of Kahn's topological ordering.
+     
     """ 
     
     # Remove node with no incoming edges from the list. Is len() 0, meaning all conditions met? If yes, add to a stack/list
