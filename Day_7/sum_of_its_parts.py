@@ -1,7 +1,7 @@
 def readFile():
     inps = []
 
-    with open("test.txt", "r") as file:
+    with open("input.txt", "r") as file:
         for line in file:
             inps.append(line.split(" "))
 
@@ -66,11 +66,10 @@ def traverse(graph, stack, result = []):
         if len(graph[node]) == 0:
             graph.pop(node)
             stack.append(node)
-            stack.sort()
     
     sortedStack = sorted(stack)
 
-    return traverse(graph, stack, result)
+    return traverse(graph, sortedStack, result)
 
 def main():
     inps = readFile()
