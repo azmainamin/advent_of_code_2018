@@ -34,12 +34,35 @@ def createPowerGrid(grid):
     return powerGrid
 
 def scanSquares(powerGrid):
-    pass
+    maxTotal = 0
+    coord = (1,1)
+    for i in range(1, len(powerGrid)):
+        for j in range(1, len(powerGrid[i])):
+            if i + 3 < len(powerGrid) and j + 3 < len(powerGrid[i]):
+                total = threeByThreeSquare(powerGrid, (i,j))
+                if total > maxTotal:
+                    maxTotal = total
+                    coord = (i,j)
+
+    return maxTotal, coord
+
+def threeByThreeSquare(grid, coord):
+    x, y = coord[0], coord[1]
+    x1, y1 = x + 3, y + 3
+    total = 0
+
+    for row in range(x,x1):
+        for col in range(y, y1):
+            total += grid[row][col]
+
+    return total
 
 
 def main():
     grid = createGrid()
-    #prettyPrintGrid(grid)
     powerGrid = createPowerGrid(grid)
-    #prettyPrintGrid(powerGrid)
+    total, coord = scanSquares(powerGrid)
+    coord = (coord[1], coord[0])
+    print(total, coord)
+
 main()
